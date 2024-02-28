@@ -30,12 +30,23 @@ public class CardsController {
     public ResponseEntity<CardsDto> fetchCardDetails(@RequestParam
                                                      @Pattern(regexp="(^$|[0-9]{10})",message = "Mobile number must be 10 digits")
                                                      String mobileNumber) {
-        return null;
+        CardsDto cardsDto = iCardsService.fetchCard(mobileNumber);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(cardsDto);
     }
 
     @PutMapping("/update")
     public ResponseEntity<ResponseDto> updateCardDetails(@Valid @RequestBody CardsDto cardsDto) {
-        return null;
+        Boolean isUpdated = iCardsService.updateCard(cardsDto);
+        if (isUpdated) {
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(new ResponseDto(CardsConstants.STATUS_200, CardsConstants.MESSAGE_200));
+        } else {
+            return ResponseEntity
+                    .status(HttpStatus.EXPECTATION_FAILED)
+                    .body(new ResponseDto(CardsConstants.STATUS_417, CardsConstants.MESSAGE_417_UPDATE));
+        }
     }
 
     @DeleteMapping("/delete")
