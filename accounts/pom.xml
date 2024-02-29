@@ -12,6 +12,7 @@
 	<artifactId>accounts</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>accounts</name>
+	<packaging>jar</packaging>
 	<description>Accounts service</description>
 	<properties>
 		<java.version>17</java.version>
@@ -67,6 +68,16 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>com.google.cloud.tools</groupId>
+				<artifactId>jib-maven-plugin</artifactId>
+				<version>3.4.1</version>
+				<configuration>
+					<to>
+						<image>docker.io/rexxay/${project.artifactId}:latest</image>
+					</to>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
