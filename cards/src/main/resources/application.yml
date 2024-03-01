@@ -1,6 +1,12 @@
 server:
   port: 9000
 spring:
+  application:
+    name: "cards"
+  profiles:
+    active: "qa"
+  config:
+    import: "optional:configserver:http://localhost:8071/"
   datasource:
     driverClassName: org.h2.Driver
     username: sa
