@@ -11,8 +11,8 @@ spring:
     config:
       server:
         git:
-          uri: "https://github.com/eazybytes/eazybytes-config.git"
-          default-label: main # branch tag
+          uri: "git@github.com:Rijkstarhn/MiniBankConfig.git"
+          default-label: master # branch tag
           timeout: 5 # 5 seconds
           clone-on-start: true # clone from the repo when start
           force-pull: true # to force usage of remote repo instead of local
