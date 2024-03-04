@@ -11,7 +11,7 @@ spring:
     config:
       server:
         git:
-          uri: "git@github.com:Rijkstarhn/MiniBankConfig.git"
+          uri: "https://github.com/Rijkstarhn/MiniBankConfig.git"
           default-label: master # branch tag
           timeout: 5 # 5 seconds
           clone-on-start: true # clone from the repo when start
