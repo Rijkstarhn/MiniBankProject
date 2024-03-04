@@ -33,6 +33,25 @@ services:
       file: common-config.yml
       service: microservice-base-config
 
+  mysqldb:
+    image: mysql
+    container_name: mysql_db
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+      timeout: 10s
+      retries: 10
+      interval: 10s
+      start_period: 10s
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./mysql_data:/var/lib/mysql
+    extends:
+      file: common-config.yml
+      service: network-deploy-service
+
   accounts:
     image: "rexxay/accounts"
     container_name: accounts-ms
@@ -40,9 +59,13 @@ services:
       - "8080:8080"
     environment:
       SPRING_APPLICATION_NAME: "accounts"
+      SPRING_DATASOURCE_URL: "jdbc:mysql://mysqldb:3306/accountsdb"
     extends:
       file: common-config.yml
       service: microservice-configserver-config
+    depends_on:
+      mysqldb:
+        condition: service_healthy
 
   loans:
     image: "rexxay/loans"
@@ -51,9 +74,13 @@ services:
       - "8090:8090"
     environment:
       SPRING_APPLICATION_NAME: "loans"
+      SPRING_DATASOURCE_URL: "jdbc:mysql://mysqldb:3306/loansdb"
     extends:
       file: common-config.yml
       service: microservice-configserver-config
+    depends_on:
+      mysqldb:
+        condition: service_healthy
 
   cards:
     image: "rexxay/cards"
@@ -62,9 +89,13 @@ services:
       - "9000:9000"
     environment:
       SPRING_APPLICATION_NAME: "cards"
+      SPRING_DATASOURCE_URL: "jdbc:mysql://mysqldb:3306/cardsdb"
     extends:
       file: common-config.yml
       service: microservice-configserver-config
+    depends_on:
+      mysqldb:
+        condition: service_healthy
 
 networks:
   eazybank:
