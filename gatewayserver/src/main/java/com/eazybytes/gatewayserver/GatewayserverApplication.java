@@ -21,7 +21,10 @@ public class GatewayserverApplication {
 		return builder.routes()
 				.route("account service",
 						r -> r.path("/eazybank/accounts/**")
-								.filters(f -> f.stripPrefix(2).addResponseHeader("responseTime", LocalDateTime.now().toString()))
+								.filters(f -> f.stripPrefix(2)
+										.addResponseHeader("responseTime", LocalDateTime.now().toString())
+										.circuitBreaker(config -> config.setName("accountsCircuitBreaker").setFallbackUri("forward:/contactSupport"))
+								)
 								.uri("lb://ACCOUNTS"))
 				.route("card service",
 						r -> r.path("/eazybank/cards/**")
