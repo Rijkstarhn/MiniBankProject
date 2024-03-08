@@ -1,5 +1,6 @@
 server:
   port: 8080
+
 spring:
   application:
     name: "accounts"
@@ -21,11 +22,21 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+
 management:
   endpoints:
     web:
       exposure:
         include: "*"
+  health:
+    readiness-state:
+      enabled: true
+    liveness-state:
+      enabled: true
+  endpoint:
+    health:
+      probes:
+        enabled: true
 
 eureka:
   instance:

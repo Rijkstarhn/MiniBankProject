@@ -51,6 +51,12 @@ services:
   accounts:
     image: "rexxay/accounts"
     container_name: accounts-ms
+    healthcheck:
+      test: "curl --fail --silent localhost:8080/actuator/health/readiness | grep UP || exit 1"
+      start_period: 10s
+      timeout: 5s
+      interval: 10s
+      retries: 10
     ports:
       - "8080:8080"
     environment:
@@ -62,6 +68,12 @@ services:
   loans:
     image: "rexxay/loans"
     container_name: loans-ms
+    healthcheck:
+      test: "curl --fail --silent localhost:8090/actuator/health/readiness | grep UP || exit 1"
+      start_period: 10s
+      timeout: 5s
+      interval: 10s
+      retries: 10
     ports:
       - "8090:8090"
     environment:
@@ -73,6 +85,12 @@ services:
   loans1:
     image: "rexxay/loans"
     container_name: loans1-ms
+    healthcheck:
+      test: "curl --fail --silent localhost:8090/actuator/health/readiness | grep UP || exit 1"
+      start_period: 10s
+      timeout: 5s
+      interval: 10s
+      retries: 10
     ports:
       - "8091:8090"
     environment:
@@ -84,10 +102,34 @@ services:
   cards:
     image: "rexxay/cards"
     container_name: cards-ms
+    healthcheck:
+      test: "curl --fail --silent localhost:9000/actuator/health/readiness | grep UP || exit 1"
+      start_period: 10s
+      timeout: 5s
+      interval: 10s
+      retries: 10
     ports:
       - "9000:9000"
     environment:
       SPRING_APPLICATION_NAME: "cards"
+    extends:
+      file: common-config.yml
+      service: microservice-eureka-config
+
+  gatewayserver:
+    image: "rexxay/gatewayserver"
+    container_name: gatewayserver-ms
+    ports:
+      - "8072:8072"
+    depends_on:
+      accounts:
+        condition: service_healthy
+      loans:
+        condition: service_healthy
+      cards:
+        condition: service_healthy
+    environment:
+      SPRING_APPLICATION_NAME: "gatewayserver"
     extends:
       file: common-config.yml
       service: microservice-eureka-config
