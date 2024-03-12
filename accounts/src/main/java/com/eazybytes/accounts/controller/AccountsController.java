@@ -185,10 +185,9 @@ public class AccountsController {
     @Retry(name="getContactInfo", fallbackMethod="getContactInfoFallback")
     public ResponseEntity<AccountsContactInfoDto> getContactInfo() throws Exception {
         logger.debug("getContactInfo() method Invoked");
-        throw new Exception("1111");
-//        return ResponseEntity
-//                .status(HttpStatus.OK)
-//                .body(accountsContactInfoDto);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(accountsContactInfoDto);
     }
 
     public ResponseEntity<AccountsContactInfoDto> getContactInfoFallback(Throwable throwable) {
