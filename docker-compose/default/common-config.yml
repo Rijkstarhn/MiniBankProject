@@ -13,6 +13,9 @@ services:
     # This determines the host of the rabbit MQ, otherwise it will be localhost for config server container
     environment:
       SPRING_RABBITMQ_HOST: "rabbit"
+      JAVA_TOOL_OPTIONS: "-javaagent:/app/libs/opentelemetry-javaagent-1.32.0.jar"
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://tempo:4317
+      OTEL_METRICS_EXPORTER: none # remove the metrics feature by Open Telemetry as we have Prometheus
 
   microservice-configserver-config:
     extends:
