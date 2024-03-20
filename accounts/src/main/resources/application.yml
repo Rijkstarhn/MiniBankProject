@@ -21,12 +21,11 @@ spring:
         updateCommunication-in-0:
           destination: communication-sent
           group: ${spring.application.name}
-  rabbitmq:
-    host: localhost
-    port: 5672
-    username: guest
-    password: guest
-    connection-timeout: 10s
+      kafka:
+        binder:
+          brokers:
+            - localhost:9092
+      default-binder: kafka
 
   datasource:
     driverClassName: org.h2.Driver
